@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Environment
+.env
+
+# Database
+*.db
+*.sqlite3
+
+# Pyrogram sessions
+*.session
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
