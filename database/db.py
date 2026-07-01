@@ -35,7 +35,7 @@ class Database:
             show_time INTEGER NOT NULL DEFAULT 0,
             edit_enabled INTEGER NOT NULL DEFAULT 0,
 
-            font TEXT NOT NULL DEFAULT '₀,₁,₂,₃,₄,₅,₆,₇,₈,₉,:',
+            font TEXT NOT NULL DEFAULT '₀₁₂₃₄₅₆₇₈₉:',
 
             edit_time REAL NOT NULL DEFAULT 0.1
         )

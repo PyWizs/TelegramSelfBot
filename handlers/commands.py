@@ -2,7 +2,7 @@ from utils.telegram import auto_delete
 import config
 
 
-async def findedKey(client, update, key: str):
+async def findedKey(client, update, key: str, txt: str):
     st = config.TEXTSETTING[key]
 
     if key == "offBot": client.user.update(enabled = False)
@@ -10,6 +10,19 @@ async def findedKey(client, update, key: str):
     elif key == "editMsgOff": client.user.update(edit_enabled = False)
     elif key == "editMsgOn": client.user.update(edit_enabled = True)
     elif key == "timeOn": client.user.update(show_time = True)
+    elif key == "setTime":
+        try:
+            client.user.update(edit_time=int(txt))
+        except: st = config.TEXTSETTING["setTimeERROR"]
+    
+    elif key == "editFont":
+        try: 
+            if len(txt) != 11: st = config.TEXTSETTING["editFontERROR"]
+            else: 
+                client.user.update(font=txt)
+        except: st = config.TEXTSETTING["editFontERROR"]
+
+
     elif key == "timeOff": 
         me = await client.get_me()
         name = me.first_name
@@ -30,11 +43,12 @@ async def findedKey(client, update, key: str):
         )
 
     await update.edit(st)
-    await auto_delete(update)
+    await auto_delete(update, 20)
 
 
 async def setting_handler(bot, update):
     for key in config.KEYWORD:
         for k in config.KEYWORD[key]:
             if update.text.lower().replace("/", "").startswith(k):
-                await findedKey(bot, update, key); break
+                txt = update.text[len(k)+1:].replace(" ", "")
+                await findedKey(bot, update, key, txt); break

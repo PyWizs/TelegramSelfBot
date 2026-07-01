@@ -1,9 +1,3 @@
-# from pyrogram import Client 
-# from config import API_ID, API_HASH
-
-# bot = Client("idk", api_id=API_ID, api_hash=API_HASH)
-
-# bot.run()
 import asyncio
 
 from pyrogram import Client
@@ -30,7 +24,6 @@ async def main():
 
     await app.connect()
 
-    # ارسال کد
     sent_code = await app.send_code(phone)
 
     code = input("Code: ").replace(" ", "")

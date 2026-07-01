@@ -10,7 +10,7 @@ SPEEDS = (
 
 
 async def outgoing_handler(client, update):
-    if not update.text:
+    if not update.text or not client.user.edit_enabled:
         return
 
     text = update.text
@@ -32,7 +32,7 @@ async def outgoing_handler(client, update):
 
         if index % step == 0:
             await update.edit(edited)
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(client.user.edit_time)
 
     if edited != text:
         await update.edit(text)
