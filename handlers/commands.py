@@ -1,19 +1,40 @@
 from utils.telegram import auto_delete
+import config
 
-async def help_handler(client, update):
-    await update.edit("""
-• **برای دیدن وضعیت ربات**: بنویسید وضعیت 
-• **برای دیدن سرگرمی ربات**: بنویسید سرگرمی 
 
-• **برای خاموش کردن ربات**: /off
-• **برای روشن کردن ربات**: /on
+async def findedKey(client, update, key: str):
+    st = config.TEXTSETTING[key]
 
-• **برای خاموش کردن تغییر نام**: /timeoff
-• **برای روشن کردن ساعت در تغییر نام**: /timeon
-• **برای تغییر فونت ساعت تایم**: /font 0,1,2,3,4,5,6,7,8,9,:
+    if key == "offBot": client.user.update(enabled = False)
+    elif key == "onBot": client.user.update(enabled = True)
+    elif key == "editMsgOff": client.user.update(edit_enabled = False)
+    elif key == "editMsgOn": client.user.update(edit_enabled = True)
+    elif key == "timeOn": client.user.update(show_time = True)
+    elif key == "timeOff": 
+        me = await client.get_me()
+        name = me.first_name
 
-• **برای خاموش کردن ادیت مسیج**: /editoff
-• **برای روشن کردن ادیت مسیج**: /editon
-• **برای تنظیم سرعت ادیت مسیج**: /settime <زمان به ثانیه>
-""")
+        for f in client.user.font: name = name.replace(f, "")
+        await client.update_profile(first_name=f"{name}"[:64])
+        
+        client.user.update(show_time = False)
+    
+    elif key == "vaziat":
+        client.user.reload()
+        st = st.format(
+            "✅" if client.user.enabled else "❌",
+            "✅" if client.user.show_time else "❌",
+            "✅" if client.user.edit_enabled else "❌",
+            client.user.edit_time,
+            client.user.font
+        )
+
+    await update.edit(st)
     await auto_delete(update)
+
+
+async def setting_handler(bot, update):
+    for key in config.KEYWORD:
+        for k in config.KEYWORD[key]:
+            if update.text.lower().replace("/", "").startswith(k):
+                await findedKey(bot, update, key); break

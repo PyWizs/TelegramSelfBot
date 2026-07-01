@@ -1,5 +1,5 @@
 import sqlite3
-
+import config
 
 class Database:
     def __init__(self, db_name: str = "database.db"):
@@ -27,15 +27,6 @@ class Database:
         self.execute("""
         CREATE TABLE IF NOT EXISTS accounts(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER UNIQUE NOT NULL,
-            session_string TEXT NOT NULL
-        )
-        """, commit=True)
-
-    def create_tables(self):
-        self.execute("""
-        CREATE TABLE IF NOT EXISTS accounts(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
 
             user_id INTEGER UNIQUE NOT NULL,
             session_string TEXT NOT NULL,
@@ -50,7 +41,8 @@ class Database:
         )
         """, commit=True)
 
-    def add_account(self, user_id: int, session_string: str, enabled: bool, show_time: bool, edit_enabled: bool, font: str, edit_time: int):
+
+    def add_account(self, user_id: int, session_string: str, enabled: bool = True, show_time: bool = False, edit_enabled: bool = False, font: str = config.DEFAULT_FONT, edit_time: float = 0.1):
         self.execute(
             """
             INSERT INTO accounts(
@@ -104,12 +96,26 @@ class User:
 
         self.reload()
 
+
     def reload(self):
         account = self.db.get_account(self.user_id)
 
         self.session = account["session_string"]
-        self.enabled = account["enabled"]
-        self.show_time = account["show_time"]
-        self.edit_enabled = account["edit_enabled"]
+        self.enabled = bool(account["enabled"])
+        self.show_time = bool(account["show_time"])
+        self.edit_enabled = bool(account["edit_enabled"])
         self.font = account["font"]
         self.edit_time = account["edit_time"]
+
+
+    def update(self, **kwargs):
+        if not kwargs: return
+
+        set_clause = ", ".join([f"{key} = ?" for key in kwargs.keys()])
+        values = list(kwargs.values())
+        values.append(self.user_id)
+
+        query = f"UPDATE accounts SET {set_clause} WHERE user_id = ?"
+        self.db.execute(query, tuple(values), commit=True)
+
+        self.reload()

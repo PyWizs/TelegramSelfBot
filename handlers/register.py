@@ -2,19 +2,21 @@ from pyrogram import filters
 from pyrogram.handlers import MessageHandler
 
 from data.animations import ANIMATIONS
-from handlers.commands import help_handler
+from handlers.commands import setting_handler
 from handlers.animations import animation_handler
 from handlers.outgoing_messages import outgoing_handler
+import config
 
 def register_handlers(client):
     ANIMATION_COMMANDS = [ cmd for commands in ANIMATIONS.keys() for cmd in commands ]
+    SETTING_COMMANDS = [ cmd for cmds in config.KEYWORD.values() for cmd in cmds ]
     
-    ALL_COMMANDS = ["help"] + ANIMATION_COMMANDS
+    ALL_COMMANDS = SETTING_COMMANDS + ANIMATION_COMMANDS
 
     client.add_handler(
         MessageHandler(
-            help_handler,
-            filters.command("help") & filters.me
+            setting_handler,
+            filters.command(SETTING_COMMANDS) & filters.me
         )
     )
 
