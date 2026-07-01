@@ -1,8 +1,10 @@
+import asyncio
+
 from pyrogram import Client
 
 from config import API_ID, API_HASH
 from handlers.register import register_handlers
-
+from database.db import User
 
 class AccountManager:
     def __init__(self, db):
@@ -14,11 +16,21 @@ class AccountManager:
         accounts = self.db.get_all_accounts()
 
         for account in accounts:
-            await self.add_account(account)
+            if account["user_id"] not in self.clients:
+                await self.add_account(account)
 
+
+    async def sync_accounts(self):
+        while True:
+            accounts = self.db.get_all_accounts()
+
+            for account in accounts:
+                if account["user_id"] not in self.clients:
+                    await self.add_account(account)
+
+            await asyncio.sleep(1800)
 
     async def add_account(self, account):
-
         if account["user_id"] in self.clients:
             return
 
@@ -29,9 +41,11 @@ class AccountManager:
             session_string=account["session_string"]
         )
 
-        register_handlers(client)
+        client.user = User(self.db, account["user_id"])
 
         await client.start()
+
+        register_handlers(client)
 
         self.clients[account["user_id"]] = client
 

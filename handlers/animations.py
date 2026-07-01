@@ -13,7 +13,9 @@ async def run_animation(update, animation):
 
 
 async def animation_handler(client, update):
-    txt = update.text.lower()
+    command = update.text.lower().lstrip("/")
 
-    if txt in ANIMATIONS:
-        await run_animation(update, ANIMATIONS[txt])
+    for commands, animation in ANIMATIONS.items():
+        if command in commands:
+            await run_animation(update, animation)
+            return
