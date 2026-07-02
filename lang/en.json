@@ -1,0 +1,26 @@
+{
+    "help": "• **Show bot status:** /vaziat\n• **Show available animations:** /sargarmi\n\n• **Turn the bot off:** /off\n• **Turn the bot on:** /on\n\n• **Disable name clock:** /timeoff\n• **Enable name clock:** /timeon\n• **Change clock font:** /font 0123456789:\n\n• **Disable message editing:** /editoff\n• **Enable message editing:** /editon\n• **Set message edit speed:** /settime <seconds>\n\n• To change language: /lang",
+
+    "sargarmi": "• List of all animations:\n\n/gun\n/love\n/emoji\n/heart\n/iloveyou\n/moon\n/cat\n/mew",
+
+    "vaziat": "🎭 **Bot Status:**\n\n• Bot Enabled: {}\n• Name Clock Enabled: {}\n• Message Editing Enabled: {}\n• Message Edit Speed: {}\n• Clock Font: {}",
+
+    "offBot": "• Bot has been disabled. 😔",
+    "onBot": "• Bot has been enabled. 😝",
+
+    "timeOff": "• Name clock has been disabled. ⌚",
+    "timeOn": "• Name clock has been enabled. ⏰",
+
+    "editMsgOff": "• Message editing has been disabled. 🫣",
+    "editMsgOn": "• Message editing has been enabled. 🤪",
+
+    "editFont": "• Clock font updated successfully. ⏱️",
+    "editFontERROR": "• Failed to change the clock font. 🌋\n• Error: Unknown",
+
+    "setTime": "• Message edit speed updated successfully. 🏃",
+    "setTimeERROR": "• Failed to update the message edit speed. 🌋\n• Error: Unknown",
+
+    "lang": "• Please select your language.\n• لطفا زبان خود رو انتخاب کنید\n\n- /lang en -> Change language to English\n- /lang fa -> تغییر زبان به فارسی",
+    "langsuc": "✅ Language change successful",
+    "langfail": "❌ This language does not exist!"
+}

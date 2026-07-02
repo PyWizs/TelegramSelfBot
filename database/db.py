@@ -8,7 +8,7 @@ class Database:
         self.cursor = self.conn.cursor()
 
         self.create_tables()
-
+        self.migrate()
 
     def execute(self, query: str, params: tuple = (), *, fetchone: bool = False, fetchall: bool = False, commit: bool = False):
         self.cursor.execute(query, params)
@@ -22,27 +22,41 @@ class Database:
         if fetchall:
             return self.cursor.fetchall()
 
+    def migrate(self):
+        try:
+            self.execute(
+                """
+                ALTER TABLE accounts
+                ADD COLUMN lang TEXT NOT NULL DEFAULT 'en'
+                """,
+                commit=True
+            )
+        except sqlite3.OperationalError:
+            pass
+
 
     def create_tables(self):
         self.execute("""
-        CREATE TABLE IF NOT EXISTS accounts(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            CREATE TABLE IF NOT EXISTS accounts(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-            user_id INTEGER UNIQUE NOT NULL,
-            session_string TEXT NOT NULL,
+                user_id INTEGER UNIQUE NOT NULL,
+                session_string TEXT NOT NULL,
 
-            enabled INTEGER NOT NULL DEFAULT 1,
-            show_time INTEGER NOT NULL DEFAULT 0,
-            edit_enabled INTEGER NOT NULL DEFAULT 0,
+                enabled INTEGER NOT NULL DEFAULT 1,
+                show_time INTEGER NOT NULL DEFAULT 0,
+                edit_enabled INTEGER NOT NULL DEFAULT 0,
 
-            font TEXT NOT NULL DEFAULT '₀₁₂₃₄₅₆₇₈₉:',
+                font TEXT NOT NULL DEFAULT '₀₁₂₃₄₅₆₇₈₉:',
 
-            edit_time REAL NOT NULL DEFAULT 0.1
-        )
+                edit_time REAL NOT NULL DEFAULT 0.1,
+
+                lang TEXT NOT NULL DEFAULT 'en'
+            )
         """, commit=True)
 
 
-    def add_account(self, user_id: int, session_string: str, enabled: bool = True, show_time: bool = False, edit_enabled: bool = False, font: str = config.DEFAULT_FONT, edit_time: float = 0.1):
+    def add_account(self, user_id: int, session_string: str, enabled: bool = True, show_time: bool = False, edit_enabled: bool = False, font: str = config.DEFAULT_FONT, edit_time: float = 0.1, lang: str = "en"):
         self.execute(
             """
             INSERT INTO accounts(
@@ -52,9 +66,10 @@ class Database:
                 show_time,
                 edit_enabled,
                 font,
-                edit_time
+                edit_time,
+                lang
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 user_id,
@@ -63,7 +78,8 @@ class Database:
                 show_time,
                 edit_enabled,
                 font,
-                edit_time
+                edit_time,
+                lang
             ),
             commit=True
         )
@@ -88,7 +104,8 @@ class Database:
             """,
             fetchall=True
         )
-    
+
+
 class User:
     def __init__(self, db, user_id):
         self.db = db
@@ -106,6 +123,7 @@ class User:
         self.edit_enabled = bool(account["edit_enabled"])
         self.font = account["font"]
         self.edit_time = account["edit_time"]
+        self.lang = account["lang"]
 
 
     def update(self, **kwargs):

@@ -5,6 +5,7 @@ from pyrogram import Client
 from config import API_ID, API_HASH
 from handlers.register import register_handlers
 from database.db import User
+from manager.language_manager import LanguageManager
 
 class AccountManager:
     def __init__(self, db):
@@ -42,6 +43,7 @@ class AccountManager:
         )
 
         client.user = User(self.db, account["user_id"])
+        client.lang = LanguageManager(default_language=client.user.lang)
 
         await client.start()
 

@@ -1,10 +1,9 @@
 from utils.telegram import auto_delete
 import config
 
-
 async def findedKey(client, update, key: str, txt: str):
-    st = config.TEXTSETTING[key]
-
+    st = client.lang.translate(client.user.lang, key)
+    
     if key == "offBot": client.user.update(enabled = False)
     elif key == "onBot": client.user.update(enabled = True)
     elif key == "editMsgOff": client.user.update(edit_enabled = False)
@@ -13,14 +12,14 @@ async def findedKey(client, update, key: str, txt: str):
     elif key == "setTime":
         try:
             client.user.update(edit_time=int(txt))
-        except: st = config.TEXTSETTING["setTimeERROR"]
+        except: st = client.lang.translate(client.user.lang, "setTimeERROR")
     
     elif key == "editFont":
         try: 
-            if len(txt) != 11: st = config.TEXTSETTING["editFontERROR"]
-            else: 
+            if len(txt) != 11: st = client.lang.translate(client.user.lang, "editFontERROR")
+            else:
                 client.user.update(font=txt)
-        except: st = config.TEXTSETTING["editFontERROR"]
+        except: st = client.lang.translate(client.user.lang, "editFontERROR")
 
 
     elif key == "timeOff": 
@@ -31,7 +30,8 @@ async def findedKey(client, update, key: str, txt: str):
         await client.update_profile(first_name=f"{name}"[:64])
         
         client.user.update(show_time = False)
-    
+
+
     elif key == "vaziat":
         client.user.reload()
         st = st.format(
@@ -41,6 +41,14 @@ async def findedKey(client, update, key: str, txt: str):
             client.user.edit_time,
             client.user.font
         )
+
+    elif key == "lang":
+        if txt != "":
+            if client.lang.exists(txt):
+                client.user.update(lang = txt)
+                st = client.lang.translate(client.user.lang, "langsuc")
+            else:
+                st = client.lang.translate(client.user.lang, "langfail")
 
     await update.edit(st)
     await auto_delete(update, 20)

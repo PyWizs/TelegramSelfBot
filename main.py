@@ -7,7 +7,6 @@ from manager.time_manager import scheduler
 db = Database()
 manager = AccountManager(db)
 
-
 async def main():
     await manager.load_accounts()
 
