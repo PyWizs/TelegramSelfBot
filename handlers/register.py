@@ -20,7 +20,7 @@ def register_handlers(client):
     client.add_handler(
         MessageHandler(
             setting_handler,
-            filters.command(SETTING_COMMANDS) & filters.me
+            filters.me & filters.command(SETTING_COMMANDS)
         )
     )
 

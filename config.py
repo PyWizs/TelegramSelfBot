@@ -19,7 +19,9 @@ KEYWORD = {
     "editMsgOff": ["editoff"],
     "editMsgOn": ["editon"],
     "setTime": ["settime"],
-    "lang": ["lang"]
+    "lang": ["lang"],
+    "translang": ["translang"],
+    "translator": ["trans", "translate", "t"]
 }
 
 DEFAULT_FONT = "₀₁₂₃₄₅₆₇₈₉:"

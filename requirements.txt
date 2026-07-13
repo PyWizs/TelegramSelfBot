@@ -1,2 +1,3 @@
 pyrogram
 dotenv
+deep-translator

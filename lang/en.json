@@ -1,5 +1,5 @@
 {
-    "help": "• **Show bot status:** /vaziat\n• **Show available animations:** /sargarmi\n\n• **Turn the bot off:** /off\n• **Turn the bot on:** /on\n\n• **Disable name clock:** /timeoff\n• **Enable name clock:** /timeon\n• **Change clock font:** /font 0123456789:\n\n• **Disable message editing:** /editoff\n• **Enable message editing:** /editon\n• **Set message edit speed:** /settime <seconds>\n\n• To change language: /lang",
+    "help": "• **Show bot status:** /vaziat\n• **Show available animations:** /sargarmi\n\n• **Turn the bot off:** /off\n• **Turn the bot on:** /on\n\n• **Disable name clock:** /timeoff\n• **Enable name clock:** /timeon\n• **Change clock font:** /font 0123456789:\n\n• **Disable message editing:** /editoff\n• **Enable message editing:** /editon\n• **Set message edit speed:** /settime <seconds>\n\n• To change language: /lang\n• To change the translation language: /translang\n\n• To use translation: /t <msg>",
 
     "sargarmi": "• List of all animations:\n\n/gun\n/love\n/emoji\n/heart\n/iloveyou\n/moon\n/cat\n/mew",
 
@@ -22,5 +22,8 @@
 
     "lang": "• Please select your language.\n• لطفا زبان خود رو انتخاب کنید\n\n- /lang en -> Change language to English\n- /lang fa -> تغییر زبان به فارسی",
     "langsuc": "✅ Language change successful",
-    "langfail": "❌ This language does not exist!"
+    "langfail": "❌ This language does not exist!",
+
+    "transsuc": "✅ Language change successful",
+    "transfail": "❌ This language does not exist!\n• Available languages:\n"
 }

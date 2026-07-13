@@ -22,12 +22,13 @@ class Database:
         if fetchall:
             return self.cursor.fetchall()
 
+
     def migrate(self):
         try:
             self.execute(
                 """
                 ALTER TABLE accounts
-                ADD COLUMN lang TEXT NOT NULL DEFAULT 'en'
+                ADD COLUMN translang TEXT NOT NULL DEFAULT 'en'
                 """,
                 commit=True
             )
@@ -56,7 +57,7 @@ class Database:
         """, commit=True)
 
 
-    def add_account(self, user_id: int, session_string: str, enabled: bool = True, show_time: bool = False, edit_enabled: bool = False, font: str = config.DEFAULT_FONT, edit_time: float = 0.1, lang: str = "en"):
+    def add_account(self, user_id: int, session_string: str, enabled: bool = True, show_time: bool = False, edit_enabled: bool = False, font: str = config.DEFAULT_FONT, edit_time: float = 0.1, lang: str = "en", translang: str = "en"):
         self.execute(
             """
             INSERT INTO accounts(
@@ -67,9 +68,10 @@ class Database:
                 edit_enabled,
                 font,
                 edit_time,
-                lang
+                lang,
+                translang
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 user_id,
@@ -79,7 +81,8 @@ class Database:
                 edit_enabled,
                 font,
                 edit_time,
-                lang
+                lang,
+                translang
             ),
             commit=True
         )
@@ -124,6 +127,7 @@ class User:
         self.font = account["font"]
         self.edit_time = account["edit_time"]
         self.lang = account["lang"]
+        self.translang = account["translang"]
 
 
     def update(self, **kwargs):
