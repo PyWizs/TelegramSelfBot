@@ -13,7 +13,7 @@ def get_run(text: str):
 def get_message(text: str):
     parts = text.split(maxsplit=1)
     if len(parts) < 2:
-        return ""
+        return "<a>"
 
     message = parts[1]
 

@@ -5,7 +5,7 @@ from deep_translator import GoogleTranslator
 
 async def findedKey(client, update, key: str, txt: str, txt2: str):
     st = client.lang.translate(client.user.lang, key)
-    
+
     if key == "offBot": client.user.update(enabled = False)
     elif key == "onBot": client.user.update(enabled = True)
     elif key == "editMsgOff": client.user.update(edit_enabled = False)
@@ -13,7 +13,7 @@ async def findedKey(client, update, key: str, txt: str, txt2: str):
     elif key == "timeOn": client.user.update(show_time = True)
     elif key == "setTime":
         try:
-            client.user.update(edit_time=int(txt))
+            client.user.update(edit_time=float(txt))
         except: st = client.lang.translate(client.user.lang, "setTimeERROR")
     
     elif key == "editFont":
